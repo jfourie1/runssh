@@ -71,7 +71,9 @@ func readX(inputFile *string) ([]host, []cmd, []string, error) {
 			c.hidx = i
 			c.cidx = j
 			c.data = cr
-			cmdstrings = append(cmdstrings, cr)
+			if i == 0 {
+				cmdstrings = append(cmdstrings, cr)
+			}
 			commands = append(commands, c)
 		}
 	}
@@ -153,7 +155,7 @@ readResults:
 	for i := 0; i < len(commands); i++ {
 		select {
 		case c := <-results:
-			cs := excelize.ToAlphaString(c.cidx+5) + strconv.Itoa(c.hidx+2)
+			cs := excelize.ToAlphaString(c.cidx+4) + strconv.Itoa(c.hidx+2)
 			xlsx.SetCellValue("Sheet1", cs, c.data)
 		case <-timeout:
 			fmt.Println("Timeout")
@@ -162,10 +164,10 @@ readResults:
 	}
 	if *inputFile != *outputFile {
 		for i, h := range hosts {
-			ch := excelize.ToAlphaString(1) + strconv.Itoa(i+2)
-			cp := excelize.ToAlphaString(2) + strconv.Itoa(i+2)
-			cu := excelize.ToAlphaString(3) + strconv.Itoa(i+2)
-			cpw := excelize.ToAlphaString(4) + strconv.Itoa(i+2)
+			ch := excelize.ToAlphaString(0) + strconv.Itoa(i+2)
+			cp := excelize.ToAlphaString(1) + strconv.Itoa(i+2)
+			cu := excelize.ToAlphaString(2) + strconv.Itoa(i+2)
+			cpw := excelize.ToAlphaString(3) + strconv.Itoa(i+2)
 			xlsx.SetCellValue("Sheet1", ch, h.host)
 			xlsx.SetCellValue("Sheet1", cp, h.port)
 			xlsx.SetCellValue("Sheet1", cu, h.user)
@@ -176,7 +178,7 @@ readResults:
 		xlsx.SetCellValue("Sheet1", "C1", "User")
 		xlsx.SetCellValue("Sheet1", "D1", "Password")
 		for i, s := range cmdstrings {
-			cc := excelize.ToAlphaString(5+i) + "1"
+			cc := excelize.ToAlphaString(4+i) + "1"
 			xlsx.SetCellValue("Sheet1", cc, s)
 		}
 	}
