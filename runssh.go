@@ -110,8 +110,8 @@ func runSSH(h *host, c *cmd) *cmd {
 }
 
 func main() {
-	inputFile := flag.String("input", "", "Input file")
-	outputFile := flag.String("output", "", "Output file, will overwrite input if not specified")
+	inputFile := flag.String("i", "", "Input file")
+	outputFile := flag.String("o", "", "Output file, will overwrite input if not specified")
 	flag.Parse()
 
 	if *inputFile == "" {
